@@ -60,6 +60,7 @@
 <!-- 引入jp文件 -->
 <script src="./libs/jquery-1.12.4.min.js"></script>
 <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="./libs/http.js"></script>
 <script>
 $(function(){
   $('.input_sub').on('click',function(e){
@@ -74,7 +75,7 @@ $(function(){
         return;
     };
     $.ajax({
-      url : 'http://localhost:8080/api/v1/admin/user/login',
+      url : BigNew.user_login,
       type : 'post',
       data : {
         username : username,
@@ -92,10 +93,9 @@ $(function(){
        }
       }
     })
-
-
   })
 })
+
 
 </script>
 </html>

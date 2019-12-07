@@ -54,11 +54,12 @@
 </body>
 <script src="./libs/jquery-1.12.4.min.js"></script>
 <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="./libs/http.js"></script>
 <script>
 $(function(){
     console.log(1);
  $.ajax({
-     url: 'http://localhost:8080/api/v1/admin/user/info',
+     url: BigNew.user_info,
      type : 'get',
     //  headers: {
     //         'Authorization': window.localStorage.getItem('token')
@@ -72,9 +73,14 @@ $(function(){
          }
      }
  })
-
-
 })
+
+// 退出操作
+$('.logout').on('click',function(){
+  localStorage.removeItem('token');
+  location.href = './login.html';
+})
+
 
 </script>
 </html>
