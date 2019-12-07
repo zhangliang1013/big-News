@@ -71,6 +71,7 @@ $(function(){
     if(username == '' || password == ''){
         $('.container-fluid').text('用户名或者密码都不可以为空');
         $('#modelId').modal();
+        return;
     };
     $.ajax({
       url : 'http://localhost:8080/api/v1/admin/user/login',
