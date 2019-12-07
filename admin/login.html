@@ -11,10 +11,6 @@
   <link rel="stylesheet" type="text/css" href="css/main.css" />
   <!-- 引入bootstrap的css文件 -->
   <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
-  <!-- 引入jq文件 -->
-  <script src="./libs/jquery-1.12.4.min.js"></script>
-  <!-- 引入bootstrap的js文件 -->
-  <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -38,6 +34,67 @@
     </div>
   </div>
 
+  <!-- 弹出框 -->
+  <!-- Modal弹出框 -->
+  <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    新增成功，稍后为您自动跳转
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<!-- 引入jp文件 -->
+<script src="./libs/jquery-1.12.4.min.js"></script>
+<script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+<script>
+$(function(){
+  $('.input_sub').on('click',function(e){
+       //按钮是一个submit按钮，有一个默认提交行为，我们不需要，要阻止
+       e.preventDefault();
+    let username = $('.input_txt').val().trim();
+    let password = $('.input_pass').val().trim();
+    // 验证非空
+    if(username == '' || password == ''){
+        $('.container-fluid').text('用户名或者密码都不可以为空');
+        $('#modelId').modal();
+    };
+    $.ajax({
+      url : 'http://localhost:8080/api/v1/admin/user/login',
+      type : 'post',
+      data : {
+        username : username,
+        password : password
+      },
+      success : function(res){
+        $('.container-fluid').text(res.msg);
+        $('#modelId').modal();
+       if(res.code === 200){
+       localStorage.setItem('token',res.tokon);
+         $('#modelId').on('hidden.bs.modal', function (e) {
+          // 该事件表示弹出框隐藏了再执行的代码
+           location.href = './index.html';
+              })
+       }
+      }
+    })
 
+
+  })
+})
+
+</script>
 </html>
