@@ -69,5 +69,70 @@
         </div>
     </div>
 </body>
+<script src="./libs/http.js"></script>
+<script>
+$(function(){
+        // 拿数据
+$.get({
+    url :  BigNew.user_detail,
+    success : function(res){
+        // $('#inputEmail1').val(res.data.username);
+        // $('#inputEmail2').val(res.data.nickname);
+        // $('#inputEmail3').val(res.data.email);
+        // $('#inputEmail4').val(res.data.password);
 
+        // $('input.username').val(res.data.username);
+        //  $('input.nickname').val(res.data.nickname);
+        //  $('input.email').val(res.data.email);
+        //  $('input.password').val(res.data.password)
+
+         for(var key in res.data){
+             $('input.' + key).val(res.data[key])
+         }
+        $('.user_pic').attr('src',res.data.userPic);
+    }
+})
+
+
+// 上传图片
+$('#exampleInputFile').on('change',function(){
+    let file = this.files[0];
+    // 把图片对象转化url路径
+    let url = URL.createObjectURL(file);
+    $('.user_pic').attr('src',url);
+});
+
+
+// 点击提交按键修改信息
+$('.btn-success').on('click',function(e){
+    // 阻止默认行为
+    e.preventDefault();
+    // 获取表单数据
+    let form = $('#form')[0];
+    let fd = new FormData(form);
+    $.post({
+        url : BigNew.user_edit,
+        processData : false,
+        contentType : false,
+        data : fd,
+        success : function(res){
+               if(res.code === 200){
+                   $.get({
+                       url : BigNew.user_info,
+                       success : function(res){
+                           parent.$('.user_info img').attr('src',res.data.userPic);
+                           parent.$('.user_center_link img').attr('src',res.data.userPic);
+                           parent.$('.user_info span').html('欢迎&nbsp;&nbsp;' + res.data.nickname + '');
+                       }
+                   })
+               }
+        }
+    })
+})
+
+
+})
+
+
+</script>
 </html>
