@@ -192,8 +192,20 @@ $('#myModal').on('show.bs.modal',function(e){
 
 // 实现删除
 
-$('.btn-danger ').on('click',function(){
-
+$('tbody').on('click','#btn-delete' ,function(){
+      let deleteId = $(this).attr('data-id');
+      $.ajax({
+          url : BigNew.category_delete,
+          type : 'post',
+          data : {
+              id : deleteId 
+          },
+          success : function(res){
+              if(res.code === 204){
+                getData();
+              }
+          }
+      })
 })
 
 })
