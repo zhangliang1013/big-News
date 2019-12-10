@@ -83,6 +83,7 @@
             </div>
         </div>
     </div>
+    </body>
 <script src="./libs/http.js"></script>
 <script type="text/html" id="categoryList">
 {{each data}}
@@ -190,23 +191,28 @@ $('#myModal').on('show.bs.modal',function(e){
 
 
 
-// 实现删除
+// 实现删除 委托
 
-$('tbody').on('click','#btn-delete' ,function(){
-      let deleteId = $(this).attr('data-id');
-      $.ajax({
-          url : BigNew.category_delete,
-          type : 'post',
-          data : {
-              id : deleteId 
-          },
-          success : function(res){
-              if(res.code === 204){
-                getData();
-              }
-          }
-      })
+$('tbody').on('click','#btn-delete',function(){
+    let delId = $('#btn-delete').attr('data-id');
+    let ans = confirm('你确定要删除吗?');
+    if(ans){
+        $.post({
+            url : BigNew.category_delete,
+            data : {
+                id : delId
+            },
+            success : function(res){
+                if(res.code === 204){
+                    getData();
+                }
+            }
+        })
+    }
 })
+
+
+
 
 })
 </script>
