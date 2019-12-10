@@ -70,6 +70,7 @@
             </table>
             <div class="row text-center">
               <ul id="pagination-demo" class="pagination-sm"></ul>
+              <div class="box">亲，没有数据了哦！！！</div>
             </div>
         </div>
     </div>
@@ -135,8 +136,13 @@ function getData(mypage,callback){
            let htmlSrc = template('artList',res);
            $('tbody').html(htmlSrc);
 
-           if(callback != null){
+           if(callback != null && res.data.data.length !== 0){
               callback(res);
+              $('#pagination-demo').show();
+              $('.box').hide();
+           }else if(res.data.data.length === 0){
+            $('#pagination-demo').hide();
+              $('.box').show();
            }
        }
     }
@@ -167,7 +173,7 @@ function getData(mypage,callback){
               $('#pagination-demo').twbsPagination('changeTotalPages',res.data.totalPage,1)
              })
           })
-          
+
              // 实现点击删除
         $('tbody').on('click','.btn-danger',function(){
             let id = $(this).attr('data-id');
@@ -187,16 +193,7 @@ function getData(mypage,callback){
             }
         })
 
-        });
-
-
-     
-
-
-
-                
-
-
+        }); 
 </script>
 
 </html>
