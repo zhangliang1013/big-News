@@ -152,8 +152,8 @@ $('#inputCover').on('change',function(e){
  $.get({
      url : BigNew.category_list,
      success : function(res){
-             let htmlSrc = template('categoryList',res);
-             $('.category').html(htmlSrc);
+             let htmlStr = template('categoryList',res);
+             $('.category').html(htmlStr);
      }
  });
   // 3.添加日期插件 
@@ -173,9 +173,67 @@ jeDate("#testico", {
 //-------------------------------------------------------------------------------------------------------------------------------------
 
 // 一,将数据渲染到每个框中
+// 根据id获取文章消息
+let artId = location.search.split('=')[1];
+$.get({
+    url : BigNew.article_search,
+    data : {
+        id : artId
+    },
+    success : function(res){
+       if(res.code === 200){
+           $('#inputTitle').val(res.data.title);
+           $('.article_cover').attr('src',res.data.cover);
+           $('#testico').val(res.data.date);
+           $('.category').val(res.data.categoryId)
+           editor.txt.html(res.data.content);
+       }
+    }
+})
 
+// 二,点击修改，修改文章
+$('.btn-edit').on('click',function(e){
+    e.preventDefault();
+let form = $('#form')[0];
+let fd = new FormData(form);
+    fd.append('id',artId);
+    fd.append('state','已发布');
+    fd.append('content',editor.txt.html());
+    $.post({
+        url : BigNew.article_edit,
+        data : fd,
+        processData : false,
+        contentType : false,
+        success : function(res){
+            if(res.code == 200){
+            window.history.back();
+            }
+        }
+    })
+});
 
-
+            
+          
+// 三,点击存为草稿
+$('.btn-draft').on('click',function(e){
+    e.preventDefault();
+let form = $('#form')[0];
+let fd = new FormData(form);
+    fd.append('id',artId);
+    // fd.append('state','已发布');
+    fd.append('content',editor.txt.html());
+    $.post({
+        url : BigNew.article_edit,
+        data : fd,
+        processData : false,
+        contentType : false,
+        success : function(res){
+            if(res.code == 200){
+            window.history.back();
+            }
+        }
+    })
+});
 
 })
 
